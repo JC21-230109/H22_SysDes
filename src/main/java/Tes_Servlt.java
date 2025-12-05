@@ -1,6 +1,9 @@
 
 
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,16 +11,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import sql_temp.Abst_connect_Serv;
+
 /**
  * Servlet implementation class Tes_Servlt
  */
 @WebServlet("/Tes_Servlt")
-public class Tes_Servlt extends HttpServlet {
+public class Tes_Servlt extends Abst_connect_Serv {
 	private static final long serialVersionUID = 1L;
 
-    /**
-     * Default constructor. 
-     */
     public Tes_Servlt() {
         // TODO Auto-generated constructor stub
     }
@@ -26,16 +28,25 @@ public class Tes_Servlt extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		try {
+			ResultSet rs=
+					this.connectDB("select AREA_CODE , AREA_NAME from AREA");
+			List<String[]> area = new ArrayList<>();
+			while(rs.next() != false) {
+				String[] ss = new String[2];
+				ss[0] = rs.getString("AREA_CODE");
+				ss[1] = rs.getString("AREA_NAME");
+				area.add(ss);
+				
+			}
+			request.setAttribute("AREA", area);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		request.getRequestDispatcher("/area.jsp").forward(request, response);
+
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
+	
 
 }
