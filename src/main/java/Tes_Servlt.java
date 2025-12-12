@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import beans.Area;
 import sql_temp.ConnectSQL;
 
 /**
@@ -31,14 +32,26 @@ public class Tes_Servlt extends HttpServlet implements ConnectSQL{
 		try {
 			ResultSet rs=
 					ConnectSQL.connectDB("select AREA_CODE , AREA_NAME from AREA");
+			/*
 			List<String[]> area = new ArrayList<>();
 			while(rs.next() != false) {
 				String[] ss = new String[2];
 				ss[0] = rs.getString("AREA_CODE");
 				ss[1] = rs.getString("AREA_NAME");
 				area.add(ss);
-				
+			}↑String[]　↓bean*/
+			
+			
+			List<Area> area = new ArrayList<>();
+			
+			while(rs.next() != false) {
+				Area areaBean=new Area(
+						rs.getString("AREA_CODE"),
+						rs.getString("AREA_NAME"));
+				area.add(areaBean);
 			}
+			
+
 			request.setAttribute("AREA", area);
 		}catch (Exception e) {
 			e.printStackTrace();

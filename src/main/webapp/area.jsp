@@ -1,4 +1,5 @@
 <%@page import="java.util.List"%>
+<%@page import="beans.Area"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -9,11 +10,13 @@
 </head>
 <%
 Object obj = request.getAttribute("AREA");
-List<String[]> List = (List<String[]>) obj;
+//List<String[]> List = (List<String[]>) obj;
+List<Area> List = (List<Area>) obj;
 %>
 <body>
 	<header>Area表の一覧（全件）</header>
 	<main>
+	<%//=List.getFirst().getAreaCode() %>
 		<%
 		if (List != null && !List.isEmpty()) {
 		%>
@@ -24,11 +27,12 @@ List<String[]> List = (List<String[]>) obj;
 					<td class="back2">エリアネーム</td>
 				</tr>
 				<%
-				for (String[] ss : List) {
+				//for (String[] ss : List) {
+					for (Area ss : List) {
 				%>
 				<tr>
-					<td class="back1"><%=ss[0]%></td>
-					<td class="back2"><%=ss[1]%></td>
+					<td class="back1"><%=ss.getAreaCode()%></td>
+					<td class="back2"><%=ss.getAreaName()%></td>
 				</tr>
 				<%
 				}
