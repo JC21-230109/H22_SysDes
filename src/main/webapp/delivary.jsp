@@ -1,71 +1,101 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" %>
-<%@ page import="java.util.List" %>
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.List, java.util.Map"%>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>登録内容確認</title>
+<title>配達内容確認</title>
 </head>
 <body>
 
-<h2>登録内容</h2>
+<h2>登録内容確認</h2>
 
-<h3>お客様情報</h3>
-<p>郵便番号：${zipcode}</p>
-<p>住所：${address}</p>
-<p>氏名：${name}</p>
-<p>電話番号：${tel}</p>
+<p>郵便番号：<%= request.getAttribute("postCode") %></p>
+<p>住所：<%= request.getAttribute("address") %></p>
+<p>氏名：<%= request.getAttribute("name") %></p>
+<p>電話番号：<%= request.getAttribute("phoneNum") %></p>
 
-<h3>家具情報</h3>
-<p>家具数：${furnitureCount} 点</p>
-
+<p>家具数：<%= request.getAttribute("furnitureCount") %> 点</p>
 <ul>
 <%
-List<String> list = (List<String>) request.getAttribute("furnitureList");
-for (String f : list) {
+    List<Map<String,String>> furnitureList = (List<Map<String,String>>) request.getAttribute("furnitureList");
+    if (furnitureList != null) {
+        for (Map<String,String> f : furnitureList) {
 %>
-  <li><%= f %></li>
-<% } %>
+<li><%= f.get("code") %>：<%= f.get("name") %></li>
+<%
+        }
+    }
+%>
 </ul>
 
-<hr>
+<h3>担当業者</h3>
+<%
+    String contraName = (String) request.getAttribute("contraName");
+    boolean canRegister = (contraName != null);
+    if (canRegister) {
+%>
+<p><strong><%= contraName %></strong></p>
+<% } else { %>
+<p style="color:red;">配達可能な業者が見つかりません</p>
+<% } %>
 
-<h2>配達希望日時</h2>
+<form action="registration" method="post">
+<div>
+    希望日：
+    <select name="hopeDate" <%= canRegister ? "required" : "disabled" %>>
+        <option value="">選択してください</option>
+        <%
+            List<String> availableDateList = (List<String>) request.getAttribute("availableDateList");
+            if (availableDateList != null) {
+                for (String d : availableDateList) {
+        %>
+        <option value="<%= d %>"><%= d %></option>
+        <%
+                }
+            }
+        %>
+    </select>
+</div>
 
-<form action="confirm" method="post">
+<div>
+    希望時間帯：
+    <select name="hopeTime" <%= canRegister ? "required" : "disabled" %>>
+        <option value="">選択してください</option>
+        <option value="AM">午前（9:00～12:00）</option>
+        <option value="PM">午後（13:00～17:00）</option>
+    </select>
+</div>
 
-  希望日：
-  <input type="date" name="hopeDate" required><br><br>
+<!-- hidden fields -->
+<input type="hidden" name="postCode" value="<%= request.getAttribute("postCode") %>">
+<input type="hidden" name="address" value="<%= request.getAttribute("address") %>">
+<input type="hidden" name="name" value="<%= request.getAttribute("name") %>">
+<input type="hidden" name="phoneNum" value="<%= request.getAttribute("phoneNum") %>">
+<input type="hidden" name="furnitureCount" value="<%= request.getAttribute("furnitureCount") %>">
+<input type="hidden" name="contraCode" value="<%= request.getAttribute("contraCode") %>">
 
-  希望時間帯：
-  <select name="hopeTime" required>
-    <option value="">選択してください</option>
-    <option value="午前">午前</option>
-    <option value="午後">午後</option>
-  </select><br><br>
+<%
+    if (furnitureList != null) {
+        for (int i = 0; i < furnitureList.size(); i++) {
+            Map<String,String> f = furnitureList.get(i);
+%>
+<input type="hidden" name="furniture<%= i+1 %>" value="<%= f.get("code") %>">
+<%
+        }
+    }
+%>
 
-  <!-- hiddenで引き回し -->
-  <input type="hidden" name="zipcode" value="${zipcode}">
-  <input type="hidden" name="address" value="${address}">
-  <input type="hidden" name="name" value="${name}">
-  <input type="hidden" name="tel" value="${tel}">
-  <input type="hidden" name="furnitureCount" value="${furnitureCount}">
+<br>
+<button type="button" onclick="location.href='delivaryform.html'">戻る</button>
+<%
+    if (canRegister) {
+%>
+<button type="submit">登録</button>
+<% } else { %>
+<button type="button" disabled>登録</button>
+<% } %>
 
-  <%
-  for (int i = 0; i < list.size(); i++) {
-  %>
-    <input type="hidden" name="furniture<%= i+1 %>" value="<%= list.get(i) %>">
-  <% } %>
-
-  <button type="button"
-        onclick="location.href='delivaryform.html'">
-  戻る
-  </button>
-  <button type="submit">登録</button>
 </form>
-
 </body>
 </html>
-
