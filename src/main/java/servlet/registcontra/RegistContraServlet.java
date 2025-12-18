@@ -76,7 +76,7 @@ public class RegistContraServlet extends HttpServlet {
             errorMsg = "業者名を入力してください";
         } else if (tel == null || !tel.matches("\\d{10,11}")) {
             errorMsg = "連絡先はハイフンなし半角数字で入力してください";
-        } else if (password == null || !password.matches("\\d{6}")) {
+        } else if (password == null || !password.matches("[a-zA-Z0-9]{6}")) {
             errorMsg = "パスワードは半角数字6桁で入力してください";
         }
 
