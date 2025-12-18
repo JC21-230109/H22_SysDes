@@ -1,7 +1,6 @@
 <%@ page language="java"
     contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="registcontra.DelArea" %>
 
 <html>
 <head>
@@ -20,13 +19,13 @@ if (errorMsg != null) {
 }
 %>
 
-<form action="traderRegister" method="post">
+<form action="RegistContra" method="post">
 
 <p>
 業者名<br>
-<input type="text" name="traderName"
- value="<%= request.getParameter("traderName") != null
- ? request.getParameter("traderName") : "" %>">
+<input type="text" name="contraName"
+ value="<%= request.getParameter("contraName") != null
+ ? request.getParameter("contraName") : "" %>">
 </p>
 
 <p>
@@ -38,23 +37,20 @@ if (errorMsg != null) {
 
 <p>
 担当地域<br>
-<select name="delareaCode">
+<select name="DELAREA_CODE">
 <option value="">-- 選択してください --</option>
 <%
-java.util.List delareaList =
-    (java.util.List)request.getAttribute("delareaList");
+java.util.List<java.util.Map<String, String>> delareaList =
+    (java.util.List<java.util.Map<String, String>>)request.getAttribute("delareaList");
 
-String selected =
-    request.getParameter("delareaCode");
+String selected = request.getParameter("DELAREA_CODE");
 
 if (delareaList != null) {
-    for (Object obj : delareaList) {
-        DelArea delarea = (DelArea)obj;
+    for (java.util.Map<String, String> area : delareaList) {
 %>
-<option value="<%= delarea.getDelAreaCode() %>"
- <%= delarea.getDelAreaCode().equals(selected) ? "selected" : "" %>>
- <%= delarea.getDelAreaName() %>
-</option>
+<option value="<%= area.get("code") %>"
+ <%= area.get("code").equals(selected) ? "selected" : "" %>>
+ <%= area.get("name") %>
 </option>
 <%
     }
@@ -69,6 +65,7 @@ if (delareaList != null) {
 </p>
 
 <input type="submit" value="上記の内容で登録">
+
 </form>
 
 </body>
