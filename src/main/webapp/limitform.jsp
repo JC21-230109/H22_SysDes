@@ -96,6 +96,7 @@ for(int i = 1; i <= 12; i++){
 </table>
 
 <div class="actions">
+<button type="button" onclick="location.href='index2.html'">戻る</button>
 <button type="submit" name="mode" value="save">登録</button>
 </div>
 
