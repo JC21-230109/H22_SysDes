@@ -1,25 +1,24 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%
+String contraName = (String)request.getAttribute("contraName");
+String tel = (String)request.getAttribute("tel");
+String areaCode = (String)request.getAttribute("areaCode");
+String password = (String)request.getAttribute("password");
+%>
 
 <html>
 <head>
-    <title>新規業者登録 完了</title>
-    <style>
-        .box {
-            width: 450px;
-            padding: 20px;
-            margin: 20px auto;
-            background-color: #e6f5f0;
-            border-radius: 20px;
-        }
-        .center {
-            text-align: center;
-        }
-        .red {
-            color: red;
-            font-weight: bold;
-        }
-    </style>
+<title>新規業者登録 完了</title>
+<style>
+.box {
+    width: 450px;
+    padding: 20px;
+    margin: 20px auto;
+    background-color: #e6f5f0;
+    border-radius: 20px;
+}
+.center { text-align: center; }
+</style>
 </head>
 
 <body>
@@ -27,26 +26,10 @@
 <h2 class="center">⑤ 新規業者登録が完了しました。</h2>
 
 <div class="box">
-    <p>業者名　：<c:out value="${traderName}" /></p>
-    <p>連絡先　：<c:out value="${tel}" /></p>
-    <p>
-        担当地域コード：
-        <c:choose>
-            <c:when test="${empty areaCode}">
-                <span class="red">形式未確定</span>
-            </c:when>
-            <c:otherwise>
-                <c:out value="${areaCode}" />
-            </c:otherwise>
-        </c:choose>
-    </p>
-    <p>登録パスワード：<c:out value="${password}" /></p>
-
-    <hr>
-
-    <p class="red center">
-        業者コードは <c:out value="${traderCode}" /> です。
-    </p>
+    <p>業者名：<%= contraName %></p>
+    <p>連絡先：<%= tel %></p>
+    <p>担当地域コード：<%= areaCode %></p>
+    <p>登録パスワード：<%= password %></p>
 </div>
 
 <div class="center">
