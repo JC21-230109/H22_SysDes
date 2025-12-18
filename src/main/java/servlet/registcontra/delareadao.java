@@ -15,9 +15,9 @@ public class delareadao {
     private static final String USER = "r07sysdev";
     private static final String PASS = "R07SysDev";
 
-    public List<delarea> findAll() throws Exception {
+    public List<DelArea> findAll() throws Exception {
 
-        List<delarea> list = new ArrayList<>();
+        List<DelArea> list = new ArrayList<>();
 
         Class.forName(DRIVER);
         try (Connection con = DriverManager.getConnection(URL, USER, PASS);
@@ -27,7 +27,7 @@ public class delareadao {
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                list.add(new delarea(
+                list.add(new DelArea(
                     rs.getString("DELAREA_CODE"),
                     rs.getString("DELAREA_NAME")
                 ));

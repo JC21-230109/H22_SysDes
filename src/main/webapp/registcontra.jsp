@@ -1,6 +1,7 @@
 <%@ page language="java"
     contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="registcontra.DelArea" %>
 
 <html>
 <head>
@@ -48,11 +49,12 @@ String selected =
 
 if (delareaList != null) {
     for (Object obj : delareaList) {
-        model.DelArea area = (model.DelArea)obj;
+        DelArea delarea = (DelArea)obj;
 %>
-<option value="<%= area.getDelareaCode() %>"
- <%= area.getDelareaCode().equals(selected) ? "selected" : "" %>>
- <%= area.getDelareaName() %>
+<option value="<%= delarea.getDelAreaCode() %>"
+ <%= delarea.getDelAreaCode().equals(selected) ? "selected" : "" %>>
+ <%= delarea.getDelAreaName() %>
+</option>
 </option>
 <%
     }
